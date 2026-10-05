@@ -2,13 +2,17 @@
 	"name": "@carrasco-leo/angular-pug-compiler",
 	"version": "0.1.0",
 	"description": "Compile Pug templates to HTML for Angular templateUrl, with include-dependency tracking and watch mode.",
-	"keywords": ["angular", "pug", "compiler"],
+	"keywords": [
+		"angular",
+		"pug",
+		"compiler"
+	],
 	"license": "MIT",
 	"author": "Léo CARRASCO",
 	"module": "lib/esm/compiler.mjs",
 	"main": "lib/commonjs/compiler.cjs",
 	"bin": {
-		"pug-compiler": "./bin/pug-compiler.mjs"
+		"pug-compiler": "bin/pug-compiler.mjs"
 	},
 	"exports": {
 		".": {
@@ -19,10 +23,12 @@
 	"scripts": {
 		"test": "jest"
 	},
-	"engine": { "node": ">=18" },
+	"engines": {
+		"node": ">=18"
+	},
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/carrasco-leo/angular-pug-compiler"
+		"url": "git+https://github.com/carrasco-leo/angular-pug-compiler.git"
 	},
 	"bugs": {
 		"url": "https://github.com/carrasco-leo/angular-pug-compiler/issues"
