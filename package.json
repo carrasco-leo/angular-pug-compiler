@@ -5,15 +5,15 @@
 	"keywords": ["angular", "pug", "compiler"],
 	"license": "MIT",
 	"author": "Léo CARRASCO",
-	"module": "esm/compiler.mjs",
-	"main": "commonjs/compiler.cjs",
+	"module": "lib/esm/compiler.mjs",
+	"main": "lib/commonjs/compiler.cjs",
 	"bin": {
 		"pug-compiler": "./bin/pug-compiler.mjs"
 	},
 	"exports": {
 		".": {
-			"import": "./esm/compiler.mjs",
-			"require": "./commonjs/compiler.cjs"
+			"import": "./lib/esm/compiler.mjs",
+			"require": "./lib/commonjs/compiler.cjs"
 		}
 	},
 	"scripts": {
