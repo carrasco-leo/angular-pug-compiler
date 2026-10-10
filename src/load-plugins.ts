@@ -1,12 +1,15 @@
 //
-// load-plugins.cjs — @carrasco-leo/angular-pug-compiler
-// ~/lib/commonjs
+// load-plugins.ts — @carrasco-leo/angular-pug-compiler
+// ~/src
 //
 
-const { existsSync } = require('node:fs');
-const { isAbsolute, join, relative } = require('node:path');
+import { existsSync } from 'node:fs';
+import { isAbsolute, join, relative } from 'node:path';
 
-function loadPlugins(pluginsPath, root) {
+export async function loadPlugins(
+	pluginsPath: string,
+	root: string,
+): Promise<any[]> {
 	if (!pluginsPath) {
 		return [];
 	}
@@ -18,7 +21,7 @@ function loadPlugins(pluginsPath, root) {
 		return [];
 	}
 
-	const loaded = require(resolvedPath);
+	const loaded = await import(resolvedPath);
 	if (!Array.isArray(loaded.plugins)) {
 		console.warn(`⚠ ${resolvedPath} does not export a "plugins" array. Continuing without plugins.`);
 		return [];
@@ -27,5 +30,3 @@ function loadPlugins(pluginsPath, root) {
 	console.log(`🔌 ${loaded.plugins.length} Pug plugin(s) loaded from ${relative(root, resolvedPath)}\n`);
 	return loaded.plugins;
 }
-
-module.exports = { loadPlugins };

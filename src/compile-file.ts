@@ -1,18 +1,21 @@
 //
-// compile-file.mjs — @carrasco-leo/angular-pug-compiler
-// ~/lib/esm
+// compile-file.ts — @carrasco-leo/angular-pug-compiler
+// ~/src
 //
 
 import { writeFileSync } from 'node:fs';
 import { join, dirname, basename, relative } from 'node:path';
 import { createRequire } from 'node:module';
 
+import type { Options as PugOptions } from 'pug';
 import { compileFile as pugCompileFile } from 'pug';
 
-/** @see https://nodejs.org/docs/latest/api/module.html#modulecreaterequirefilename */
-const require = createRequire(import.meta.url);
+import type { PugCompilerOptions } from './compiler.js';
 
-export function compileFile(options, path) {
+/** @see https://nodejs.org/docs/latest/api/module.html#modulecreaterequirefilename */
+// const require = createRequire(import.meta.url);
+
+export function compileFile(options: PugCompilerOptions, path: string): void {
 	const absolutePath = join(options.root, path);
 	const dir = dirname(absolutePath);
 	const fileName = dir + '/' + basename(path, '.pug') + '.html';
@@ -22,15 +25,15 @@ export function compileFile(options, path) {
 			doctype: 'html',
 			basedir: options.root,
 			plugins: options.plugins,
-		});
+		} as PugOptions);
 
 		const html = fn({
-			require: (requirePath) => pugRequire(dir, requirePath),
+			require: (requirePath: string) => pugRequire(dir, requirePath),
 		});
 
 		writeFileSync(fileName, html, 'utf8');
 		console.log(`✓ ${path} → ${relative(options.root, fileName)}`);
-	} catch (error) {
+	} catch (error: any) {
 		console.error(`✗ Failed to compile ${path} :`);
 		console.error(`  ${error.message}\n`);
 
@@ -40,7 +43,7 @@ export function compileFile(options, path) {
 	}
 }
 
-function pugRequire(from, dest) {
+function pugRequire(from: string, dest: string) {
 	if (!dest.startsWith('./') && !dest.startsWith('../')) {
 		return require(dest);
 	}

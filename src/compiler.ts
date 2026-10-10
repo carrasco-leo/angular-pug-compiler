@@ -1,23 +1,33 @@
 //
-// compiler.mjs — @carrasco-leo/angular-pug-compiler
-// ~/lib/esm
+// compiler.ts — @carrasco-leo/angular-pug-compiler
+// ~/src
 //
 
 import { existsSync, unlinkSync } from 'node:fs';
 import { relative, join, isAbsolute } from 'node:path';
 
-import { loadPlugins } from './load-plugins.mjs';
+import { loadPlugins } from './load-plugins.js';
+import { compileFile } from './compile-file.js';
+import { prepareTree, resolveTree, resolvePath } from './tree-compilation.js';
 
-import controlFlowPlugins from './control-flow-plugins.mjs';
 
-import { compileFile } from './compile-file.mjs';
-import { prepareTree, resolveTree, resolvePath } from './tree-compilation.mjs';
+import controlFlowPlugins from './control-flow-plugins.js';
 
-function resolveFromCwd(p) {
+import type { ParseArgsValue } from './parse-args.js';
+
+export interface PugCompilerOptions extends ParseArgsValue {
+	plugins?: any[];
+	tree?: Record<string, Set<string>>;
+	links?: Record<string, Set<string>>;
+}
+
+function resolveFromCwd(p: string): string {
 	return isAbsolute(p) ? p : join(process.cwd(), p);
 }
 
-export async function runPugCompiler(options = {}) {
+export async function runPugCompiler(
+	options: PugCompilerOptions = {},
+): Promise<void> {
 	options.root = options.root ? resolveFromCwd(options.root) : process.cwd();
 	options.pattern = options.pattern || 'projects/**/*.pug';
 	options.watch = !!options.watch;
@@ -52,21 +62,21 @@ export async function runPugCompiler(options = {}) {
 			.on('error', (error) => console.error('Watcher error :', error));
 	}
 
-	function resolveAdd(absolutePath) {
+	function resolveAdd(absolutePath: string) {
 		const path = relative(options.root, absolutePath);
 
 		resolveTree(options, path);
 		resolvePath(options, path);
 	}
 
-	function resolveChange(absolutePath) {
+	function resolveChange(absolutePath: string) {
 		const path = relative(options.root, absolutePath);
 
 		resolveTree(options, path);
 		resolvePath(options, path);
 	}
 
-	function resolveUnlink(absolutePath) {
+	function resolveUnlink(absolutePath: string) {
 		const path = relative(options.root, absolutePath);
 		const htmlPath = absolutePath.replace(/\.pug$/, '.html');
 
@@ -77,7 +87,7 @@ export async function runPugCompiler(options = {}) {
 
 		for (const dependentPath of options.tree[path] || []) {
 			options.links[dependentPath]?.delete(path);
-			compileFile(dependentPath);
+			compileFile(options, dependentPath);
 		}
 	}
 }

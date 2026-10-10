@@ -20,6 +20,8 @@ supports cascading recompilation and watch mode.
 * Support Angular workspaces with multiple projects.
 * Use a custom project root.
 * Load custom Pug plugins.
+* Use `--control-flow-plugins` to write Angular control-flow blocks directly in
+  Pug's indentation-based structure.
 * Support polling mode for environments where native filesystem events are
   unreliable.
 
@@ -71,6 +73,46 @@ Load custom Pug plugins:
 npx pug-compiler --plugins=./pug-plugins.js
 ```
 
+#### Angular control-flow syntax
+
+Enable `--control-flow-plugins` to use Angular control-flow blocks as part of
+Pug's indentation-based template structure. This avoids writing the control-flow
+statements as Pug text nodes prefixed with `|`.
+
+For example, instead of writing:
+
+```pug
+div
+  | @if (condition) {
+  p Condition is true!
+  | } @else {
+  p Condition is false!
+  | }
+```
+
+You can write:
+
+```pug
+div
+  @if (condition) {
+    p Condition is true!
+  } @else {
+    p Condition is false!
+  }
+```
+
+Enable the plugin when compiling your templates:
+
+```bash
+npx pug-compiler --control-flow-plugins --pattern="src/**/*.pug"
+```
+
+It can also be combined with watch mode:
+
+```bash
+npx pug-compiler --control-flow-plugins --watch --pattern="src/**/*.pug"
+```
+
 Use polling when native filesystem events are unreliable:
 
 ```bash
@@ -90,8 +132,8 @@ A typical Angular workspace configuration could look like this:
 ```json
 {
   "scripts": {
-    "pug:build": "pug-compiler --pattern=\"projects/*/src/**/*.pug\"",
-    "pug:watch": "pug-compiler --watch --use-polling --pattern=\"projects/*/src/**/*.pug\"",
+    "pug:build": "pug-compiler --control-flow-plugins --pattern=\"projects/*/src/**/*.pug\"",
+    "pug:watch": "pug-compiler --control-flow-plugins --watch --use-polling --pattern=\"projects/*/src/**/*.pug\"",
     "prebuild": "npm run pug:build",
     "prestart": "npm run pug:build",
     "start": "concurrently -n pug,ng -c yellow,blue \"npm run pug:watch\" \"ng serve\""

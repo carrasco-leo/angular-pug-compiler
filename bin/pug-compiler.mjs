@@ -4,8 +4,8 @@
 // ~/bin
 //
 
-import { runPugCompiler } from '../lib/esm/compiler.mjs';
-import { helpText, parseArgs } from '../lib/esm/parse-args.mjs';
+import { runPugCompiler } from '../lib/esm/compiler.js';
+import { helpText, parseArgs } from '../lib/esm/parse-args.js';
 
 const options = parseArgs(process.argv.slice(2), {
 	onHelp: () => console.log(helpText()),

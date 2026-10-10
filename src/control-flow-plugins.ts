@@ -1,6 +1,6 @@
 //
-// control-flow-plugins.mjs — @carrasco-leo/angular-pug-compiler
-// ~/lib/esm
+// control-flow-plugins.ts — @carrasco-leo/angular-pug-compiler
+// ~/src
 //
 
 /**
@@ -23,7 +23,7 @@
  */
 export default [
 	{ lex: {
-		eos: (lexer) => {
+		eos: (lexer: any) => {
 			if (lexer.input.length) return;
 
 			for (let i = 0; i < lexer.tokens.length; i++) {
@@ -45,7 +45,7 @@ export default [
 				}
 			}
 		},
-		text: (lexer) => {
+		text: (lexer: any) => {
 			let match = lexer.input.match(/^ *@(\w+(?: +\w+)*) *(?=\()/);
 			if (match) {
 				const cfType = match[1];
