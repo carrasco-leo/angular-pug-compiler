@@ -5,15 +5,11 @@
 
 import { writeFileSync } from 'node:fs';
 import { join, dirname, basename, relative } from 'node:path';
-import { createRequire } from 'node:module';
 
 import type { Options as PugOptions } from 'pug';
 import { compileFile as pugCompileFile } from 'pug';
 
 import type { PugCompilerOptions } from './compiler.js';
-
-/** @see https://nodejs.org/docs/latest/api/module.html#modulecreaterequirefilename */
-// const require = createRequire(import.meta.url);
 
 export function compileFile(options: PugCompilerOptions, path: string): void {
 	const absolutePath = join(options.root, path);
