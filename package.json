@@ -15,7 +15,10 @@
 	"bin": {
 		"pug-compiler": "bin/pug-compiler.mjs"
 	},
-	"files": ["lib", "bin"],
+	"files": [
+		"lib",
+		"bin"
+	],
 	"exports": {
 		".": {
 			"import": {
@@ -29,7 +32,8 @@
 		}
 	},
 	"scripts": {
-		"test": "jest",
+		"test": "node --import tsx --test \"test/**/*.test.ts\"",
+		"test:watch": "node --import tsx --test --watch \"test/**/*.test.ts\"",
 		"clean": "node --input-type=module -e \"import { rmSync } from 'node:fs'; rmSync('lib', { recursive: true, force: true })\"",
 		"build:esm": "tsc -p tsconfig.esm.json",
 		"build:cjs": "tsc -p tsconfig.cjs.json && node --input-type=module -e \"import { writeFileSync } from 'node:fs'; writeFileSync('lib/commonjs/package.json', JSON.stringify({ type: 'commonjs' }, null, 2) + '\\n')\"",
@@ -55,6 +59,6 @@
 	},
 	"devDependencies": {
 		"@types/pug": "^2.0.10",
-		"jest": "^29.7.0"
+		"tsx": "^4.23.15"
 	}
 }
