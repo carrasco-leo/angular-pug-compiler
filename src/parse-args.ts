@@ -65,6 +65,8 @@ export function parseArgs(
 			value.pluginsPath = arg.slice('--plugins='.length);
 		} else if (arg.startsWith('--poll-interval=')) {
 			value.pollInterval = Number(arg.slice('--poll-interval='.length));
+		} else if (arg === '--control-flow-plugins') {
+			value.controlFlowPlugins = true;
 		} else if (arg === '--help' || arg === '-h') {
 			if (options.onHelp) {
 				options.onHelp();
