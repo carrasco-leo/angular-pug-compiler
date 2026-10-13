@@ -10,8 +10,8 @@
 	"license": "MIT",
 	"type": "module",
 	"author": "Léo CARRASCO",
-	"module": "lib/esm/compiler.mjs",
-	"main": "lib/commonjs/compiler.cjs",
+	"module": "lib/esm/compiler.js",
+	"main": "lib/commonjs/compiler.js",
 	"bin": {
 		"pug-compiler": "bin/pug-compiler.mjs"
 	},
